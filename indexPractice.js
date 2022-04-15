@@ -11,3 +11,9 @@ for(let i of listItems){
 headerTitle.style.borderBottom="2px solid black";
 addItem.style.fontWeight="bold";
 addItem.style.color="green";
+let testClassLi = document.getElementsByClassName('test-class');
+testClassLi[0].style.backgroundColor='red';
+let li=document.getElementsByTagName('li');
+for(let i of li){
+    i.style.backgroundColor='yellow';
+}
