@@ -26,9 +26,47 @@
 // listItem3rd.style.display='none';
 
 
-let listItems = document.querySelectorAll('.list-group-item');
-listItems[1].style.color='green';
-let odd=document.querySelectorAll('.list-group-item:nth-child(odd)');
-for(let i of odd){
-    i.style.backgroundColor='green';
-}
+// let listItems = document.querySelectorAll('.list-group-item');
+// listItems[1].style.color='green';
+// let odd=document.querySelectorAll('.list-group-item:nth-child(odd)');
+// for(let i of odd){
+//     i.style.backgroundColor='green';
+// }
+
+let item=document.querySelector('#items');
+//parentElement
+item.parentElement.style.backgroundColor='#f4f4f4';
+//lastelementchild
+item.lastElementChild.style.color='red';
+//lastchild
+console.log(item.lastChild);
+//create child
+let newLi=document.createElement('li');
+newLi.innerText='item6';
+item.appendChild(newLi);
+//firstelementchild
+item.firstElementChild.style.backgroundColor='yellow';
+//firstchild
+console.log(item.firstChild);
+//nextsibling
+console.log(item.nextSibling);
+//nextelementsibling
+item.nextElementSibling.style.borderBottom='2px solid black';
+//previoussibling
+console.log(item.previousSibling);
+//previouselementsibling
+item.previousElementSibling.style.borderTop='2px solid black';
+//create element
+let newDiv=document.createElement('div');
+//setAttribute
+newDiv.setAttribute('title','test');
+//createtextnode
+let divText=document.createTextNode('Hello world');
+newDiv.appendChild(divText);
+
+//adding hello before item lister
+let head=document.querySelector('#main-header .container');
+let h1=document.querySelector('header h1');
+head.insertBefore(newDiv,h1);
+//adding hello world before list
+item.parentElement.insertBefore(newDiv,item);
