@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice</title>
+    <style>
+        body{
+            
+            background-image: url("https://images.unsplash.com/photo-1548504773-429e84f586d2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        #container{
+            display: flex;
+            justify-content: center;
+            justify-self: center;
+        }
+        #formBlock {
+            background-color: white;
+            border: 3px solid rgb(233, 103, 17);
+            border-radius: 10px;
+            width:50%;
+            padding:10px;
+        }
+        h3,h5{
+            text-align: center;
+        }
+        .inp{
+            height: 30px;
+            width:99%;
+        }
+        .date{
+            height: 30px;
+            width:49%;
+        }
+        #btn{
+            height: 40px;
+            width:100%;
+            border-radius: 2px;
+            background-color: rgb(233, 103, 17);
+            color: white;
+            border:none;
+        }
+        h3{
+            color:rgb(233, 103, 17);
+        }
+        .notification{
+            background-color: rgb(138, 34, 16);
+            color: white;
+            text-align: center;
+            width:100%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="formBlock">
+            <form">
+                <h3>Book a call</h3>
+                <h5>Book a call slot and our representive will call you within 1hr of selected time.</h5>
+                <hr>
+                <p id="Notify"></p>
+                <p>
+                    <label for="name">Name:</label>
+                    <br>
+                    <input id="name" class="inp" type="text" name="name">
+                </p>
+                <p>
+                    <label for="email">Email:</label>
+                    <br>
+                    <input id="email" class="inp" type="email" name="email">
+                </p>
+                <p>
+                    <label for="phone">Phone:</label>
+                    <br>
+                    <input id="phone" class="inp" type="number" name="phone">
+                </p>
+                <p>
+                    <label for="time">Time for Call:</label>
+                    <br>
+                    <input id="date" class="date" type="date" placeholder="22-11-2020">
+                    <input id="time" class="date" type="time">
+                </p>
+                <p> 
+                    <input type="submit" id="btn" value="GET A CALL">
+                </p>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const name=document.querySelector("#name");
+        const email=document.querySelector("#email");
+        const phone=document.querySelector("#phone");
+        const date=document.querySelector("#date");
+        const time=document.querySelector("#time");
+        const btn=document.querySelector("#btn");
+        const notify=document.querySelector("#Notify");
+
+        date.value="2000-12-14";
+        time.value="11:59";
+        btn.addEventListener('click',(e)=>{
+            e.preventDefault();
+            if(name.value==="" || email.value==="" || phone.value==="" || date.value==="" || time.value==="")
+            {
+                notify.innerHTML="Please enter all the values";
+                notify.classList.add('notification');
+
+                setTimeout(()=> {notify.innerHTML="";
+                                notify.classList.remove('notification');},3000);
+            }
+            else{
+                console.log(`Name: ${name.value} Email:${email.value} Phone Number: ${phone.value} Date and time: ${date.value} ${time.value}`);
+                name.value="";
+                email.value="";
+                phone.value="";
+                date.value="";
+                time.value="";
+            }
+        });
+
+        
+    </script>
+</body>
+</html>
