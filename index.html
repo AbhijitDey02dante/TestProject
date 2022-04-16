@@ -103,6 +103,17 @@
 
         date.value="2000-12-14";
         time.value="11:59";
+        let newUserObj=JSON.parse(localStorage.getItem('userObj'));
+        if(newUserObj)
+        {
+            name.value=newUserObj.name;
+            email.value=newUserObj.email;
+            phone.value=newUserObj.phone;
+            date.value=newUserObj.date;
+            time.value=newUserObj.time;
+        }
+
+
         btn.addEventListener('click',(e)=>{
             e.preventDefault();
             if(name.value==="" || email.value==="" || phone.value==="" || date.value==="" || time.value==="")
@@ -115,11 +126,14 @@
             }
             else{
                 //storing datas in local storage
-                localStorage.setItem('name',name.value);
-                localStorage.setItem('email',email.value);
-                localStorage.setItem('phone',phone.value);
-                localStorage.setItem('date',date.value);
-                localStorage.setItem('time',time.value);
+                let userObj = {
+                    name: name.value,
+                    email: email.value,
+                    phone: phone.value,
+                    date: date.value,
+                    time: time.value
+                };
+                localStorage.setItem('userObj',JSON.stringify(userObj));
                 console.log(`Name: ${name.value} Email:${email.value} Phone Number: ${phone.value} Date and time: ${date.value} ${time.value}`);
                 name.value="";
                 email.value="";
