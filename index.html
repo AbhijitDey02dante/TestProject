@@ -114,12 +114,19 @@
                                 notify.classList.remove('notification');},3000);
             }
             else{
+                //storing datas in local storage
+                localStorage.setItem('name',name.value);
+                localStorage.setItem('email',email.value);
+                localStorage.setItem('phone',phone.value);
+                localStorage.setItem('date',date.value);
+                localStorage.setItem('time',time.value);
                 console.log(`Name: ${name.value} Email:${email.value} Phone Number: ${phone.value} Date and time: ${date.value} ${time.value}`);
                 name.value="";
                 email.value="";
                 phone.value="";
                 date.value="";
                 time.value="";
+                
             }
         });
 
