@@ -3,44 +3,43 @@ let listItems = document.querySelector('#items');     //list
 let item = document.querySelector("#addItemInp");       //new item input
 let description = document.querySelector("#addDescription");       //new item input
 const search=document.querySelector('#filter');
-let arr=[];
+
 
 for(let i=0;i<localStorage.length;i++){
     let storedItemObj = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    arr.push(storedItemObj);
-    if(storedItemObj){
-        let newItemLi = document.createElement('li');
-        newItemLi.className='list-group-item';
-        newItemLi.append(document.createTextNode(storedItemObj.item));
+    let newItemLi = document.createElement('li');
+    newItemLi.id=storedItemObj.description;
+    newItemLi.className='list-group-item';
+    newItemLi.append(document.createTextNode(storedItemObj.item));
     
-        let deleteBtn = document.createElement('button');
-        deleteBtn.className='btn btn-danger float-right delete';
-        deleteBtn.append(document.createTextNode('X'));
-        newItemLi.append(deleteBtn);
+    let deleteBtn = document.createElement('button');
+    deleteBtn.className='btn btn-danger float-right delete';
+    deleteBtn.append(document.createTextNode('X'));
+    newItemLi.append(deleteBtn);
         
     
-        let editBtn = document.createElement('button');
-        editBtn.className='mx-1 btn btn-info float-right edit';
-        editBtn.append(document.createTextNode('Edit'));
-        newItemLi.append(editBtn);
+    let editBtn = document.createElement('button');
+    editBtn.className='mx-1 btn btn-info float-right edit';
+    editBtn.append(document.createTextNode('Edit'));
+    newItemLi.append(editBtn);
     
         
-        let newDescription = document.createElement('p');
-        newDescription.className='description font-italic';
-        newDescription.append(document.createTextNode(storedItemObj.description));
-        newItemLi.append(newDescription);
+    let newDescription = document.createElement('p');
+    newDescription.className='description font-italic';
+    newDescription.append(document.createTextNode(storedItemObj.description));
+    newItemLi.append(newDescription);
     
-        listItems.appendChild(newItemLi);
-    }
+    listItems.appendChild(newItemLi);
 
 }
 
-
+//add
 formBtn.addEventListener('submit',(e)=>{
     e.preventDefault();
     if(item.value!='')
     {
         let newItemLi = document.createElement('li');
+        newItemLi.id=description.value;
         newItemLi.className='list-group-item';
         newItemLi.append(document.createTextNode(item.value));
 
@@ -62,16 +61,15 @@ formBtn.addEventListener('submit',(e)=>{
         newItemLi.append(newDescription);
 
         listItems.appendChild(newItemLi);
+        if(localStorage.getItem(description.value)){
+            removeFromList(description.value);
+        }
 
         let newItemObj ={
             item: item.value,
             description: description.value
         }
-
-        arr.push(newItemObj);
-        for(let i in arr){
-            localStorage.setItem(i,JSON.stringify(arr[i]));
-        }
+        localStorage.setItem(description.value,JSON.stringify(newItemObj));
 
 
         item.value='';
@@ -79,13 +77,29 @@ formBtn.addEventListener('submit',(e)=>{
 
     }
 });
-
 listItems.addEventListener('click',(e)=>{
     if(e.target.classList.contains('delete')){
-        e.target.parentElement.remove();
+        let idOfItem = e.target.parentElement.id;
+        // console.log(idOfItem);
+        removeFromList(idOfItem);
     }
+    if(e.target.classList.contains('edit')){
+        item.value=e.target.parentElement.firstChild.textContent;
+        description.value=e.target.parentElement.id;
+        let idOfItem = e.target.parentElement.id;
+        removeFromList(idOfItem);
+
+    }
+
+
 });
 
+function removeFromList(delItem){
+    var del=document.getElementById(delItem);
+    localStorage.removeItem(delItem);
+    del.remove();
+}
+//filter
 search.addEventListener('keyup',(e)=>{
     let inp=search.value.toLowerCase();
     let itemItr=listItems.querySelectorAll('li');
