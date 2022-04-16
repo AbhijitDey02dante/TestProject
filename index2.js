@@ -27,5 +27,4 @@ btn.addEventListener('click',(e)=>{
             msg.classList.remove('error');
         },3000);
     }
-
 });
