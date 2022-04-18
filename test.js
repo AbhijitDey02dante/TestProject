@@ -44,3 +44,7 @@ function countButton(){
     })
 }
 countButton();
+
+window.addEventListener('DOMContentLoaded',()=>{
+    console.log("DOM has loaded");
+})
