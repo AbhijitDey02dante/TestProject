@@ -121,15 +121,33 @@ listExpense.addEventListener('click',(e)=>{
                 }
             })
         })
+        .catch(err=>console.log(err));
     }
     if(e.target.className=='edit')
     {
-        let idEdit=e.target.parentElement.id;
-        let editItem=JSON.parse(localStorage.getItem(idEdit));
-        amount.value=editItem.amount;
-        description.value=editItem.description;
-        category.value=editItem.category;
-        delUser(idEdit);
+        // let idEdit=e.target.parentElement.id;
+        // let editItem=JSON.parse(localStorage.getItem(idEdit));
+        // amount.value=editItem.amount;
+        // description.value=editItem.description;
+        // category.value=editItem.category;
+        // delUser(idEdit);
+        
+        axios.get('https://crudcrud.com/api/b31a5a740e1c45048c7e97fdbf734afb/appointmentData')
+        .then(res=>{
+            res.data.forEach(element=>{
+                if(element.description==e.target.parentElement.id){
+                    amount.value=element.amount;
+                    description.value=element.description;
+                    category.value=element.category;
+                    delUser(element.description);
+
+                    axios.delete(`https://crudcrud.com/api/b31a5a740e1c45048c7e97fdbf734afb/appointmentData/${element._id}`)
+                    .then(res=>console.log(deleted))
+                    .catch(err=>console.log(err));
+                }
+            })
+        })
+        .catch(err=>console.log(err));
     }
 })
 
