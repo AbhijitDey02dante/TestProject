@@ -63,10 +63,14 @@ submit.addEventListener('click',(e)=>{
 
         listExpense.appendChild(li);
 
-        let expenseObj=(JSON.stringify({amount:amount.value,
+        let expenseObj={amount:amount.value,
                         description:description.value,
-                        category:category.value}))
-        localStorage.setItem(description.value,expenseObj);
+                        category:category.value}
+
+        //pushing data
+        axios.post('https://crudcrud.com/api/b31a5a740e1c45048c7e97fdbf734afb/appointmentData',expenseObj)
+        .then(resolve => console.log(resolve.data))
+        .catch(err => console.log(err));
 
         amount.value='';
         description.value='';
