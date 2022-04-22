@@ -1,50 +1,91 @@
-// //function call using call
-// function test(){
-// 	console.log("test function");
-// }
-// test.call();
-// //function call using apply
-// function test(){
+class Queue{
+    constructor(size){
+        this.queue=[];
+        this.size=size;
+        this.minPos=0;
+        this.maxPos=0;
+    }
+    enqueue(val){                           //insert value
+        if(this.maxPos<this.size)
+        {
+            this.queue[this.maxPos]=val;
+            this.maxPos=this.maxPos+1;
+        }
+        else
+        {
+            console.log('Full');
+        }
+    }
 
-// 	console.log("test function");
-// }
-// test.apply();
-// //function call using bind
-// function test(){
-// 	console.log("test function");
-// }
-// let bounding=test.bind();
-// bounding();
-// //function call binding object
-// let Student={age:20};
-// function studAge(){
-// 	console.log(`Student age is ${this.age}`);
-// }
-// let boundAge=studAge.bind(Student);
-// boundAge();
-// //method currying using bind
-// function multiply(x,y){
-//     console.log(x*y);
-// }
-// let multiplyByTwo=multiply.bind(this,2);
-// multiplyByTwo(5);
-// //method currying via closure
-// function multiplying(x,y){
-//     return function(y){
-//         console.log(x*y);
-//     }
-// }
-// let multiplyingByTwo=multiplying(2);
-// multiplyingByTwo(5);
-let btn=document.querySelector('#clickMe');
-function countButton(){
-        let count=0
-        btn.addEventListener('click',()=>{
-        console.log('clicked Me    '+(++count));
-    })
+    dequeue(){                               //remove value
+        if(this.minPos<this.maxPos)
+        {
+            let data=this.queue[this.minPos];
+            this.queue[this.minPos]=undefined;
+            this.minPos=this.minPos+1;
+            return data;
+        }
+        else
+            console.log('Empty');
+    }
+
+    peek(){                                 //check last element entered
+        if(this.minPos<this.maxPos)
+            return this.queue[this.maxPos-1];
+        else
+            console.log('Empty');
+    }
+
+    isEmpty(){                            //check if queue is empty
+        if(!(this.minPos<this.maxPos))
+            return true;
+        return false;
+    }
+
+    isFull(){                                  //check if queue is full
+        if(this.maxPos>=this.size)
+            return true;
+        return false;
+    }
+
+    display(){                                //display queue elements
+        for(let i=this.minPos;i<this.maxPos;i++)
+            console.log(this.queue[i]);
+    }
 }
-countButton();
 
-window.addEventListener('DOMContentLoaded',()=>{
-    console.log("DOM has loaded");
-})
+
+class Stack{
+    constructor(size){
+        this.q1=new Queue(1000)
+        this.q2=new Queue(1000)
+        this.stArr=[];
+        this.size=size;
+    }
+    push(val){
+        if(this.stArr.length<this.size)
+            this.q1.enqueue(val);
+        else
+            console.log('Stack is full');
+    }
+    pop(){
+        if(!(this.q1.isEmpty())){
+            let x=this.q1.dequeue();
+            while(!(this.q1.isEmpty())){
+                this.q2.enqueue(x);
+                x=this.q1.dequeue();
+            }
+            while(!(this.q2.isEmpty()))
+            {
+                this.q1.enqueue(this.q2.dequeue());
+            }
+            return x;
+        }
+    }
+    display(){
+        this.q1.display();
+    }
+
+}
+let st1=new Stack(3);
+// st1.display(4);
