@@ -6,31 +6,59 @@ const submit=document.querySelector('#submit');
 
 const listExpense=document.querySelector('#list');
 
-for(let i=0;i<localStorage.length;i++)
-{
-    let objItem=JSON.parse(localStorage.getItem(localStorage.key(i)));
-    // console.log(objItem);
+window.addEventListener('DOMContentLoaded',()=>{
+    axios.get('https://crudcrud.com/api/b31a5a740e1c45048c7e97fdbf734afb/appointmentData')
+    .then(res => {
+        res.data.forEach(element => {
+        
+                const li=document.createElement('li');
+                li.id=element.description;
+                const textNode=document.createTextNode(`${element.amount} * ${element.description} * ${element.category}`);
+                li.append(textNode);
+            
+                const del=document.createElement('button');
+                del.innerText=`Delete Expense`;
+                del.setAttribute('type','button');
+                del.className='delete';
+                li.appendChild(del);
+            
+                const edit=document.createElement('button');
+                edit.innerText=`Edit Expense`;
+                edit.setAttribute('type','button');
+                edit.className='edit';
+                li.appendChild(edit);
+            
+                listExpense.appendChild(li);
+            
+        })        
+    })
+    .catch(err => console.log(err));
+})
+// for(let i=0;i<localStorage.length;i++)
+// {
+//     let objItem=JSON.parse(localStorage.getItem(localStorage.key(i)));
+//     // console.log(objItem);
     
-    const li=document.createElement('li');
-    li.id=objItem.description;
-    const textNode=document.createTextNode(`${objItem.amount} * ${objItem.description} * ${objItem.category}`);
-    li.append(textNode);
+//     const li=document.createElement('li');
+//     li.id=objItem.description;
+//     const textNode=document.createTextNode(`${objItem.amount} * ${objItem.description} * ${objItem.category}`);
+//     li.append(textNode);
 
-    const del=document.createElement('button');
-    del.innerText=`Delete Expense`;
-    del.setAttribute('type','button');
-    del.className='delete';
-    li.appendChild(del);
+//     const del=document.createElement('button');
+//     del.innerText=`Delete Expense`;
+//     del.setAttribute('type','button');
+//     del.className='delete';
+//     li.appendChild(del);
 
-    const edit=document.createElement('button');
-    edit.innerText=`Edit Expense`;
-    edit.setAttribute('type','button');
-    edit.className='edit';
-    li.appendChild(edit);
+//     const edit=document.createElement('button');
+//     edit.innerText=`Edit Expense`;
+//     edit.setAttribute('type','button');
+//     edit.className='edit';
+//     li.appendChild(edit);
 
-    listExpense.appendChild(li);
+//     listExpense.appendChild(li);
 
-}
+// }
 
 
 submit.addEventListener('click',(e)=>{
