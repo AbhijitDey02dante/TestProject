@@ -7,19 +7,15 @@ const listItem=document.querySelector('#listItems');
 
 window.addEventListener('DOMContentLoaded',async ()=>{
     try{
-        let view = axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData');
-        await view;
-        view.then((res)=>{        
-            res.data.forEach(element => {
-                showUser(element);
-            });
+        let res = await axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData');
+        res.data.forEach((element)=>{
+            showUser(element);
         })
     }
     catch(error){
         console.log(error);
     }
 })
-
 
 mainForm.addEventListener('submit',async (e)=>{
     e.preventDefault();
@@ -35,23 +31,19 @@ mainForm.addEventListener('submit',async (e)=>{
             
     
             //check for duplicate before adding
-            let res = axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData')
-            await res;
-            res.then(async (res)=>{
-                res.data.forEach(async (element) => {
-                    const serverIdCheck=element.amount+element.description+element.category;
-                    if(id==serverIdCheck){
-                        await axios.delete(`https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData/${element._id}`)
-                        console.log(`Deleted id:${element._id}`);
-                        delUser(id);
-                    }
-                });
-    
+            let res = await axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData')
+            res.data.forEach(async (element)=>{
+                const serverIdCheck=element.amount+element.description+element.category;
+                if(id==serverIdCheck){
+                    await axios.delete(`https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData/${element._id}`)
+                    console.log(`Deleted id:${element._id}`);
+                    delUser(id);
+                }
+            });
                 showUser(obj);
                 await axios.post('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData',obj);
                 console.log(`Successfully entered`);
     
-            })
             amount.value='';
             description.value='';
         }
@@ -60,7 +52,6 @@ mainForm.addEventListener('submit',async (e)=>{
         }
     }
 })
-
 //delete or edit users
 listItem.addEventListener('click',async (e)=>{
     if(e.target.className=='delete')
@@ -74,22 +65,17 @@ listItem.addEventListener('click',async (e)=>{
     if(e.target.className=='edit'){
         const id=e.target.parentElement.id;
         try{
-            let val=axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData')
-            await val;
-            val
-            .then((res)=>{
-                res.data.forEach(element => {
-                    const serverIdCheck=element.amount+element.description+element.category;
-                    if(id==serverIdCheck){
-                        amount.value=element.amount;
-                        description.value=element.description;
-                        category.value=element.category;
-                    }
-                });
+            let val=await axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData')
+            val.data.forEach((element)=>{
+                const serverIdCheck=element.amount+element.description+element.category;
+                if(id==serverIdCheck){
+                    amount.value=element.amount;
+                    description.value=element.description;
+                    category.value=element.category;
+                }
             })
             delUser(id);
             delUserServer(id);
-
         }
         catch(error){
             console.log(error);
@@ -98,9 +84,6 @@ listItem.addEventListener('click',async (e)=>{
 
 
 })
-
-
-
 //show user based on obj value
 function showUser(obj){
     const li=document.createElement('li');
@@ -128,22 +111,17 @@ function delUser(id){
     const del=document.getElementById(id);
     del.remove();
 }
-
 //deletes from server
 async function delUserServer(id){
     try{
-        let res=axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData')
-        await res;
-        res
-        .then((res)=>{
-            res.data.forEach(async (element) => {
-                const serverIdCheck=element.amount+element.description+element.category;
-                if(id==serverIdCheck){
-                    await axios.delete(`https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData/${element._id}`)
-                    console.log(`Deleted id:${element._id}`)
-                }
-            });
-        })
+        let res=await axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData')
+        res.data.forEach(async (element) => {
+            const serverIdCheck=element.amount+element.description+element.category;
+            if(id==serverIdCheck){
+                await axios.delete(`https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData/${element._id}`)
+                console.log(`Deleted id:${element._id}`)
+            }
+        });
     }
     catch(error){
         console.log(error);
