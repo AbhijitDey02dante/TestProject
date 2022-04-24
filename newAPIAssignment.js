@@ -5,62 +5,64 @@ const description=document.querySelector('#description');
 const category=document.querySelector('#category');
 const listItem=document.querySelector('#listItems');
 
-window.addEventListener('DOMContentLoaded',()=>{
-    axios.get('https://crudcrud.com/api/815aeba70c69454ba137e8fddb6e9a74/itemData')
-    .then((res)=>{
-        res.data.forEach(element => {
-            showUser(element);
-        });
-    })
-    .catch(error=>{console.log(error);})
+window.addEventListener('DOMContentLoaded',async ()=>{
+    try{
+        let view = axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData');
+        await view;
+        view.then((res)=>{        
+            res.data.forEach(element => {
+                showUser(element);
+            });
+        })
+    }
+    catch(error){
+        console.log(error);
+    }
 })
 
 
-mainForm.addEventListener('submit',(e)=>{
+mainForm.addEventListener('submit',async (e)=>{
     e.preventDefault();
 
     if(amount.value!='' && description.value!=''){
-        const obj={
-            amount: amount.value,
-            description: description.value,
-            category: category.value
+        try{
+            const obj={
+                amount: amount.value,
+                description: description.value,
+                category: category.value
+            }
+            const id=obj.amount+obj.description+obj.category;
+            
+    
+            //check for duplicate before adding
+            let res = axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData')
+            await res;
+            res.then(async (res)=>{
+                res.data.forEach(async (element) => {
+                    const serverIdCheck=element.amount+element.description+element.category;
+                    if(id==serverIdCheck){
+                        await axios.delete(`https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData/${element._id}`)
+                        console.log(`Deleted id:${element._id}`);
+                        delUser(id);
+                    }
+                });
+    
+                showUser(obj);
+                await axios.post('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData',obj);
+                console.log(`Successfully entered`);
+    
+            })
+            amount.value='';
+            description.value='';
         }
-        const id=obj.amount+obj.description+obj.category;
-        // if(delUserServer(id))
-        //     delUser(id);
-        
-
-        //check for duplicate before adding
-        axios.get('https://crudcrud.com/api/815aeba70c69454ba137e8fddb6e9a74/itemData')
-        .then((res)=>{
-            res.data.forEach(element => {
-                const serverIdCheck=element.amount+element.description+element.category;
-                if(id==serverIdCheck){
-                    delUser(id);
-                    axios.delete(`https://crudcrud.com/api/815aeba70c69454ba137e8fddb6e9a74/itemData/${element._id}`)
-                    .then((res)=>console.log(`Deleted id:${element._id}`))
-                    .catch(error=>console.log(error))
-                }
-            });
-
-
-            showUser(obj);
-            axios.post('https://crudcrud.com/api/815aeba70c69454ba137e8fddb6e9a74/itemData',obj)
-            .then((res)=>console.log(`Successfully entered`))
-            .catch((error)=>console.log(error));
-
-        })
-        .catch(error=>{console.log(error);})
-
-
-
-        // amount.value='';
-        // description.value='';
+        catch(error){
+            console.log(error);
+        }
     }
 })
 
 //delete or edit users
-listItem.addEventListener('click',(e)=>{
+listItem.addEventListener('click',async (e)=>{
     if(e.target.className=='delete')
     {
         const id=e.target.parentElement.id;
@@ -71,22 +73,27 @@ listItem.addEventListener('click',(e)=>{
     }
     if(e.target.className=='edit'){
         const id=e.target.parentElement.id;
-        
-        axios.get('https://crudcrud.com/api/815aeba70c69454ba137e8fddb6e9a74/itemData')
-        .then((res)=>{
-            res.data.forEach(element => {
-                const serverIdCheck=element.amount+element.description+element.category;
-                if(id==serverIdCheck){
-                    amount.value=element.amount;
-                    description.value=element.description;
-                    category.value=element.category;
-                }
-            });
-        })
-        .catch(error=>{console.log(error);})
+        try{
+            let val=axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData')
+            await val;
+            val
+            .then((res)=>{
+                res.data.forEach(element => {
+                    const serverIdCheck=element.amount+element.description+element.category;
+                    if(id==serverIdCheck){
+                        amount.value=element.amount;
+                        description.value=element.description;
+                        category.value=element.category;
+                    }
+                });
+            })
+            delUser(id);
+            delUserServer(id);
 
-        delUser(id);
-        delUserServer(id);
+        }
+        catch(error){
+            console.log(error);
+        }
     }
 
 
@@ -123,17 +130,22 @@ function delUser(id){
 }
 
 //deletes from server
-function delUserServer(id){
-    axios.get('https://crudcrud.com/api/815aeba70c69454ba137e8fddb6e9a74/itemData')
-    .then((res)=>{
-        res.data.forEach(element => {
-            const serverIdCheck=element.amount+element.description+element.category;
-            if(id==serverIdCheck){
-                axios.delete(`https://crudcrud.com/api/815aeba70c69454ba137e8fddb6e9a74/itemData/${element._id}`)
-                .then((res)=>console.log(`Deleted id:${element._id}`))
-                .catch(error=>console.log(error))
-            }
-        });
-    })
-    .catch(error=>{console.log(error);})
+async function delUserServer(id){
+    try{
+        let res=axios.get('https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData')
+        await res;
+        res
+        .then((res)=>{
+            res.data.forEach(async (element) => {
+                const serverIdCheck=element.amount+element.description+element.category;
+                if(id==serverIdCheck){
+                    await axios.delete(`https://crudcrud.com/api/4be0a0529b954b6d8d649692c3efe808/itemData/${element._id}`)
+                    console.log(`Deleted id:${element._id}`)
+                }
+            });
+        })
+    }
+    catch(error){
+        console.log(error);
+    }
 }
