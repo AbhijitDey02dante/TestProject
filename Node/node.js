@@ -1,23 +1,38 @@
 const http = require('http');
+const fs=require('fs');
 
 const server=http.createServer((req,res)=>{
     res.setHeader('Content-type','text/html');
-    res.write('<html>');
-    if(req.url=="/"){
-        res.write('<head><title>Welcome</title></head>');
-        res.write('<body><h1>Welcome</h1></body>');
+    const url=req.url;
+    const method=req.method;
+    if(url==='/'){
+        let message='';
+        try{
+            message=fs.readFileSync('message.txt');
+        }
+        catch{
+            message='';
+        }
+        res.write('<html>');
+        res.write('<head><title>Enter Data</title></head>');
+        res.write('<body>');
+        res.write(`<p>${message}</p>`);
+        res.write('<form action="/message" method="POST"><input type="text" name="message"><button type="submit">SEND</button></form>')
+        res.write('</body>');
     }
-    if(req.url=="/home"){
-        res.write('<head><title>Welcome home</title></head>');
-        res.write('<body><h1>Welcome home</h1></body>');
-    }
-    if(req.url=="/about"){
-        res.write('<head><title>Welcome to About Us page</title></head>');
-        res.write('<body><h1>Welcome to About Us page</h1></body>');
-    }
-    if(req.url=="/node"){
-        res.write('<head><title>Welcome to my Node Js project</title></head>');
-        res.write('<body><h1>Welcome to my Node Js project</h1></body>');
+    if(url==='/message' && method==='POST'){
+        const body=[];
+        req.on('data',(chunk)=>{
+            body.push(chunk);
+        })
+        req.on('end',()=>{
+            const parsedBody=Buffer.concat(body).toString();
+            const message=parsedBody.split('=')[1];
+            fs.writeFileSync('message.txt',message);
+        })
+
+        res.statusCode=302;
+        res.setHeader('Location','/');
     }
     res.write('</html>');
     res.end();
