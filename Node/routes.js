@@ -37,7 +37,6 @@ const routeHandler=(req,res)=>{
     res.end();
 };
 // module.exports=routeHandler;
-
 // module.exports={
 //     handler: routeHandler,
 //     randomString: "random text"
