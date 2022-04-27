@@ -36,7 +36,6 @@ const routeHandler=(req,res)=>{
     res.write('</html>');
     res.end();
 };
-
 // module.exports=routeHandler;
 
 // module.exports={
