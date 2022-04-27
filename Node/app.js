@@ -1,6 +1,15 @@
-const http = require('http');
-const routeHandler=require('./routes.js');
-console.log(routeHandler.randomString);
-const server=http.createServer(routeHandler.handler);
+const express=require('express');
 
-server.listen(4000);
+const app=express();
+
+app.use((req,res,next)=>{
+    console.log("Inside middleware");
+    next(); // Allows request to pass to next middleware in line
+});
+
+app.use((req,res,next)=>{
+    console.log("Inside next middleware");
+    res.send('<h1>Express Header</h1>');
+});
+
+app.listen(4000);
