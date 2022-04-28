@@ -1,0 +1,54 @@
+
+        body{
+            padding:0;
+            margin:0;
+            font-family: sans-serif;
+        }
+        .mainHeader{
+            width:100%;
+            height:3.5rem;
+            background-color: rgb(249, 183, 51);
+            display:flex;
+            align-items: center;
+        }
+        .mainHeader-nav__item-list{
+            margin:0;
+            list-style: none;
+            display:flex;
+            flex-direction: row;
+            height:100%;
+        }
+        .mainHeader-nav__item a{
+            color: white;
+            text-decoration: none;
+            padding-left: 1rem;;
+        }
+        .mainHeader-nav__item a:hover{
+            color: rgb(228, 108, 23);
+        }
+        .formMainBlock{
+            padding:1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .formBlock{
+            padding:0.1rem;
+        }
+        .formBlock-input{
+            border:3px solid rgb(251, 215, 12);
+            height:1.3rem;
+            border-radius: 5px;
+        }
+        .formBlock-button{
+            background: none;
+            border:3px solid rgb(251, 139, 12);
+            color:rgb(251, 139, 12);
+            height:2rem;
+            border-radius: 5px;
+        }
+        .formBlock-button:hover{
+            background-color: rgb(251, 139, 12);
+            color:white;
+        }
