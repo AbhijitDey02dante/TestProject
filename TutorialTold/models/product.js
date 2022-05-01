@@ -15,7 +15,13 @@ module.exports = class Product{
     }
 
     static fetchAll() {
-        const prod=JSON.parse(fs.readFileSync('database/data.txt'));
+        let prod;
+        try{
+            prod=JSON.parse(fs.readFileSync('database/data.txt'));
+        }
+        catch(e){
+            prod=[];
+        }
         products=[...prod];
         return prod;
     }

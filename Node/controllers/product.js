@@ -2,6 +2,8 @@ const path=require('path');
 
 const dirPath = require('../util/path.js');
 
+const prod=[];
+
 exports.getProducts = (req,res,next)=>{
     res.sendFile(path.join(dirPath,'views','add-product.html'));
     // res.send('<form action="/product" method="POST"><input type="text" name="title"><input type="text" name="size"><button type="submit">ADD</button></form>');
@@ -16,7 +18,8 @@ exports.success=(req,res,next)=>{
 }
 
 exports.postProducts = (req,res,next)=>{
-    console.log(req.body);
+    prod.push({title:req.body.title,size:req.body.size});
+    console.log(prod);
     res.redirect('/add-product');
 }
 
